@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIT Pune Clubs Explorer | Official Student Campus Hub</title>
+  <meta name="description" content="Discover, explore, and join premier student technical clubs at Vishwakarma Institute of Technology (VIT Pune). Explore GDG, AWS, IEEE, events, and core teams.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='5' cy='12' r='3' fill='%231a73e8'/><circle cx='10' cy='12' r='3' fill='%23ea4335'/><circle cx='15' cy='12' r='3' fill='%23f9ab00'/><circle cx='20' cy='12' r='3' fill='%231e8e3e'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#/" class="brand-logo" id="brand-link" aria-label="VIT Pune Clubs Home">
+        <div class="google-dots" aria-hidden="true">
+          <span class="dot dot-blue"></span>
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">Campus<span class="accent-text">Clubs</span></span>
+          <span class="brand-sub">VIT Pune</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <a href="#/" class="nav-link active" data-nav="explore">Explore Clubs</a>
+        <a href="#/events" class="nav-link" data-nav="all-events">Campus Events</a>
+        <a href="#/about-vit" class="nav-link" data-nav="about">About Hub</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn btn-secondary btn-sm ripple" id="quick-join-btn">
+          <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="8.5" cy="7.5" r="4"></circle>
+            <line x1="20" y1="8" x2="20" y2="14"></line>
+            <line x1="23" y1="11" x2="17" y2="11"></line>
+          </svg>
+          <span>Join a Club</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Dynamic View Container -->
+  <main id="app-root">
+    <!-- VIEW 1: Clubs Directory / Home View -->
+    <section id="directory-view" class="view-panel active">
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="hero-bg-shapes">
+          <span class="shape shape-1"></span>
+          <span class="shape shape-2"></span>
+          <span class="shape shape-3"></span>
+          <span class="shape shape-4"></span>
+        </div>
+        <div class="container hero-content">
+          <h1 class="hero-title">
+            Explore <span class="g-blue">Student</span> <span class="g-red">Communities</span> <br>
+            that <span class="g-yellow">Build</span> the <span class="g-green">Future</span>
+          </h1>
+          <p class="hero-desc">
+            Discover technical societies, collaborate on cutting-edge student projects, attend flagship hackathons, and accelerate your engineering journey right here on campus.
+          </p>
+
+          <!-- Search & Filter Controls -->
+          <div class="search-filter-card">
+            <div class="search-input-wrapper">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input 
+                type="text" 
+                id="club-search-input" 
+                placeholder="Search by club name, keywords, tech stack..." 
+                aria-label="Search clubs"
+                autocomplete="off"
+              >
+              <button class="clear-search-btn" id="clear-search-btn" aria-label="Clear search" style="display: none;">&times;</button>
+            </div>
+            <div class="filter-pills" id="filter-pills">
+              <button class="filter-chip active ripple" data-filter="all">All Domains</button>
+              <button class="filter-chip ripple" data-filter="software">Software & AI</button>
+              <button class="filter-chip ripple" data-filter="cloud">Cloud & DevOps</button>
+              <button class="filter-chip ripple" data-filter="hardware">Hardware & Research</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Clubs Directory Section -->
+      <section class="clubs-grid-section">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Premier Student Chapters</h2>
+              <p class="section-subtitle">Official technology and engineering organizations recognized by VIT Pune</p>
+            </div>
+            <div class="clubs-count-badge" id="clubs-count">Showing 3 active clubs</div>
+          </div>
+
+          <div class="clubs-grid" id="clubs-grid">
+            <!-- Dynamically populated club cards will appear here -->
+          </div>
+          
+          <div id="no-results" class="no-results" style="display: none;">
+            <div class="no-results-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 42px; height: 42px; color: var(--text-tertiary);">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <h3>No matching clubs found</h3>
+            <p>Try searching for different terms or reset your filters.</p>
+            <button class="btn btn-primary ripple" id="reset-filters-btn">Reset Filters</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Campus Highlights Featurettes -->
+      <section class="highlights-section">
+        <div class="container">
+          <div class="highlights-grid">
+            <div class="highlight-card">
+              <div class="highlight-icon icon-blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+              <h4>Hands-on Innovation</h4>
+              <p>Work on real-world industry problem statements, open source codebases, and national competitions.</p>
+            </div>
+
+            <div class="highlight-card">
+              <div class="highlight-icon icon-red">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </div>
+              <h4>Flagship Events</h4>
+              <p>Attend expert-led technical bootcamps, international hackathons, paper symposiums, and networking meetups.</p>
+            </div>
+
+            <div class="highlight-card">
+              <div class="highlight-icon icon-yellow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <h4>Mentorship & Network</h4>
+              <p>Learn directly from senior student leads, illustrious alumni placed at MAANG, and industry mentors.</p>
+            </div>
+
+            <div class="highlight-card">
+              <div class="highlight-icon icon-green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
+              <h4>Verified Recognition</h4>
+              <p>Earn official participation certificates, leadership credentials, and activity points recognized by the institute.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- VIEW 2: Detailed Club Page View -->
+    <section id="club-detail-view" class="view-panel" style="display: none;">
+      <!-- Breadcrumb & Back Bar -->
+      <div class="detail-header-bar">
+        <div class="container detail-nav-wrapper">
+          <button class="back-btn ripple" id="back-to-directory-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Back to All Clubs</span>
+          </button>
+          <div class="breadcrumb" id="detail-breadcrumb">
+            <span>Clubs</span>
+            <span class="crumb-separator">/</span>
+            <span class="active-crumb" id="crumb-club-name">Club Details</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Club Hero Banner -->
+      <section class="club-hero" id="club-hero-container">
+        <!-- Rendered dynamically -->
+      </section>
+
+      <!-- Navigation Tabs Inside Club Page -->
+      <div class="club-tabs-wrapper sticky-tabs">
+        <div class="container">
+          <div class="club-nav-tabs" role="tablist">
+            <button class="club-tab active ripple" data-tab="about" role="tab">About Club</button>
+            <button class="club-tab ripple" data-tab="events" role="tab">Events & Workshops</button>
+            <button class="club-tab ripple" data-tab="members" role="tab">Core Team Members</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content Sections -->
+      <div class="container club-content-container">
+        <!-- Tab 1: About Us & Description -->
+        <div class="tab-pane active" id="pane-about">
+          <div class="about-grid" id="about-details-content">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Tab 2: Events -->
+        <div class="tab-pane" id="pane-events">
+          <div class="events-container">
+            <div class="events-header">
+              <div>
+                <h3 class="pane-title">Upcoming & Past Flagship Events</h3>
+                <p class="pane-subtitle">Register for sessions, hackathons, and technical bootcamps</p>
+              </div>
+              <div class="events-filters" id="events-filter-btns">
+                <button class="filter-chip-sm active ripple" data-event-filter="all">All Events</button>
+                <button class="filter-chip-sm ripple" data-event-filter="upcoming">Upcoming</button>
+                <button class="filter-chip-sm ripple" data-event-filter="past">Past</button>
+              </div>
+            </div>
+            <div class="events-grid" id="events-list-container">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Core Team Members -->
+        <div class="tab-pane" id="pane-members">
+          <div class="members-container">
+            <div class="members-header">
+              <div>
+                <h3 class="pane-title">Meet the Core Team</h3>
+                <p class="pane-subtitle">The passionate student leaders and developers steering the club</p>
+              </div>
+              <div class="members-count" id="members-count-badge">8 Leads & Coordinators</div>
+            </div>
+            <div class="members-grid" id="members-list-container">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: General Campus Events View -->
+    <section id="all-events-view" class="view-panel" style="display: none;">
+      <div class="container py-6">
+        <div class="section-header">
+          <div>
+            <span class="badge hero-badge">VIT Pune Campus Hub</span>
+            <h2 class="section-title">All Campus Tech Events</h2>
+            <p class="section-subtitle">Aggregated timeline of upcoming tech talks, coding sprints, and hardware bootcamps</p>
+          </div>
+        </div>
+        <div class="events-grid" id="global-events-grid">
+          <!-- Populated from all clubs -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: About Campus Hub View -->
+    <section id="about-hub-view" class="view-panel" style="display: none;">
+      <div class="container py-6">
+        <div class="about-hub-card">
+          <div class="google-dots mb-4" aria-hidden="true">
+            <span class="dot dot-blue"></span>
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </div>
+          <h2 class="section-title">About VIT Pune Campus Clubs Explorer</h2>
+          <p class="lead-text">
+            Vishwakarma Institute of Technology (VIT Pune) fosters an energetic community of student innovators, builders, and researchers.
+          </p>
+          <div class="hub-stats-row">
+            <div class="hub-stat">
+              <span class="stat-number">3,000+</span>
+              <span class="stat-label">Active Student Members</span>
+            </div>
+            <div class="hub-stat">
+              <span class="stat-number">45+</span>
+              <span class="stat-label">Annual Flagship Events</span>
+            </div>
+            <div class="hub-stat">
+              <span class="stat-number">₹10L+</span>
+              <span class="stat-label">Hackathon Prizes Won</span>
+            </div>
+            <div class="hub-stat">
+              <span class="stat-number">100%</span>
+              <span class="stat-label">Student Led Initiatives</span>
+            </div>
+          </div>
+          <p class="hub-description">
+            This portal acts as the single window discovery platform for engineering undergraduates and postgraduates to explore chapters such as Google Developer Groups (GDG), AWS Cloud Student Club, and IEEE Student Branch.
+          </p>
+          <div class="hub-actions">
+            <a href="#/" class="btn btn-primary ripple">Explore Clubs Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Interactive Modals / Popups -->
+
+  <!-- Modal 1: Join Club Application Form Modal -->
+  <div class="modal-backdrop" id="join-modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button class="modal-close-btn" id="join-modal-close" aria-label="Close modal">&times;</button>
+      <div class="modal-header">
+        <div class="modal-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="8.5" cy="7.5" r="4"></circle>
+            <line x1="20" y1="8" x2="20" y2="14"></line>
+            <line x1="23" y1="11" x2="17" y2="11"></line>
+          </svg>
+        </div>
+        <div>
+          <h3 class="modal-title">Join Student Club</h3>
+          <p class="modal-subtitle">Submit your interest to join the community at VIT Pune</p>
+        </div>
+      </div>
+
+      <form id="join-club-form" class="modal-form" novalidate>
+        <div class="form-group">
+          <label for="join-club-select">Select Club <span class="required">*</span></label>
+          <select id="join-club-select" class="form-control" required>
+            <option value="gdg">Google Developer Groups (GDG) on Campus</option>
+            <option value="aws">AWS Student Club VIT Pune</option>
+            <option value="ieee">IEEE Student Branch VIT Pune</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="join-name">Full Name <span class="required">*</span></label>
+            <input type="text" id="join-name" class="form-control" placeholder="e.g. Tanmay Joshi" required>
+            <span class="field-error" id="err-join-name">Please enter your full name</span>
+          </div>
+          <div class="form-group">
+            <label for="join-prn">PRN / Roll No. <span class="required">*</span></label>
+            <input type="text" id="join-prn" class="form-control" placeholder="e.g. 12210452" required>
+            <span class="field-error" id="err-join-prn">Please enter your valid PRN</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="join-email">VIT Institutional Email <span class="required">*</span></label>
+            <input type="email" id="join-email" class="form-control" placeholder="name.surname@vit.edu" required>
+            <span class="field-error" id="err-join-email">Enter a valid email ending in @vit.edu</span>
+          </div>
+          <div class="form-group">
+            <label for="join-year">Academic Year <span class="required">*</span></label>
+            <select id="join-year" class="form-control" required>
+              <option value="FY">First Year (FY B.Tech)</option>
+              <option value="SY" selected>Second Year (SY B.Tech)</option>
+              <option value="TY">Third Year (TY B.Tech)</option>
+              <option value="BTech">Final Year (B.Tech)</option>
+              <option value="MTech">M.Tech / Post-grad</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="join-domain">Primary Domain of Interest <span class="required">*</span></label>
+          <select id="join-domain" class="form-control" required>
+            <option value="Web & App Development">Web & App Development</option>
+            <option value="AI / Machine Learning">Artificial Intelligence & Machine Learning</option>
+            <option value="Cloud Computing & DevOps">Cloud Computing & DevOps</option>
+            <option value="Robotics, IoT & Embedded Systems">Robotics, IoT & Embedded Systems</option>
+            <option value="UI/UX & Design">UI/UX & Graphic Design</option>
+            <option value="Public Relations & Event Management">PR, Media & Event Management</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="join-statement">Why do you want to join? (Short motivation)</label>
+          <textarea id="join-statement" class="form-control" rows="2" placeholder="Tell us what you're excited to learn or contribute..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary ripple" id="cancel-join-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary ripple" id="submit-join-btn">
+            <span>Submit Application</span>
+            <svg class="btn-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 2a10 10 0 0 1 10 10"></path>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Event Registration / RSVP Modal -->
+  <div class="modal-backdrop" id="event-modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button class="modal-close-btn" id="event-modal-close" aria-label="Close modal">&times;</button>
+      <div class="modal-header">
+        <div class="modal-icon icon-green" id="event-modal-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+        </div>
+        <div>
+          <h3 class="modal-title" id="event-modal-title">Register for Event</h3>
+          <p class="modal-subtitle" id="event-modal-subtitle">Reserve your free pass for this session</p>
+        </div>
+      </div>
+
+      <div class="event-summary-box" id="event-summary-box">
+        <!-- Event summary rendered dynamically -->
+      </div>
+
+      <form id="event-rsvp-form" class="modal-form" novalidate>
+        <input type="hidden" id="rsvp-event-id" value="">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="rsvp-name">Full Name <span class="required">*</span></label>
+            <input type="text" id="rsvp-name" class="form-control" placeholder="e.g. Sanika Patil" required>
+            <span class="field-error" id="err-rsvp-name">Name is required</span>
+          </div>
+          <div class="form-group">
+            <label for="rsvp-prn">PRN / Student ID <span class="required">*</span></label>
+            <input type="text" id="rsvp-prn" class="form-control" placeholder="e.g. 12210873" required>
+            <span class="field-error" id="err-rsvp-prn">PRN is required</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="rsvp-email">Email Address <span class="required">*</span></label>
+          <input type="email" id="rsvp-email" class="form-control" placeholder="your.name@vit.edu" required>
+          <span class="field-error" id="err-rsvp-email">Valid email is required</span>
+        </div>
+
+        <div class="form-group">
+          <label for="rsvp-department">Department / Branch</label>
+          <select id="rsvp-department" class="form-control">
+            <option value="Computer Engineering">Computer Engineering</option>
+            <option value="Information Technology">Information Technology</option>
+            <option value="AI & Data Science">AI & Data Science</option>
+            <option value="Electronics & Telecommunication">Electronics & Telecommunication</option>
+            <option value="Mechanical / Instrumentation">Mechanical / Instrumentation</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary ripple" id="cancel-rsvp-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary ripple" id="submit-rsvp-btn">
+            <span>Confirm RSVP & Get Pass</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Member Profile Spotlight Modal -->
+  <div class="modal-backdrop" id="member-modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-box modal-box-sm">
+      <button class="modal-close-btn" id="member-modal-close" aria-label="Close modal">&times;</button>
+      <div class="member-spotlight-content" id="member-spotlight-body">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-col brand-col">
+        <div class="google-dots mb-3" aria-hidden="true">
+          <span class="dot dot-blue"></span>
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+        </div>
+        <h4 class="footer-title">VIT Pune Campus Clubs Hub</h4>
+        <p class="footer-text">
+          Vishwakarma Institute of Technology, 666, Upper Indiranagar, Bibwewadi, Pune, Maharashtra 411037.
+        </p>
+        <div class="footer-google-tag">
+          Designed with Google Design Guidelines &bull; Clean, Minimalist, Fast
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h5 class="footer-heading">Featured Chapters</h5>
+        <ul class="footer-links">
+          <li><a href="#/club/gdg" class="footer-link">Google Developer Groups (GDG)</a></li>
+          <li><a href="#/club/aws" class="footer-link">AWS Cloud Student Club</a></li>
+          <li><a href="#/club/ieee" class="footer-link">IEEE Student Branch</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5 class="footer-heading">Quick Actions</h5>
+        <ul class="footer-links">
+          <li><a href="#/" class="footer-link">Browse All Clubs</a></li>
+          <li><a href="#/events" class="footer-link">Upcoming Events Schedule</a></li>
+          <li><a href="javascript:void(0)" class="footer-link" id="footer-join-link">Join a Club</a></li>
+          <li><a href="#/about-vit" class="footer-link">Campus Hub Info</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5 class="footer-heading">Connect With Campus</h5>
+        <p class="footer-text mb-3">Join student technical community discussions on Discord & WhatsApp.</p>
+        <button class="btn btn-outline btn-sm ripple" id="footer-newsletter-btn">
+          <span>Get Event Updates</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p>&copy; 2026 Vishwakarma Institute of Technology (VIT Pune) &bull; Student Technical Council</p>
+        <div class="footer-badge">
+          <span class="status-indicator"></span> All Clubs Active (2026-27 Session)
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
